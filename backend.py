@@ -4,7 +4,7 @@ import pandas as pd
 import uvicorn
 import cloudpickle
 
-# model_without_cloud = HotelPredictionModel.load_model('model_without_cloud.pkl')
+# model_without_cloud = ObecityPredictionModel.load_model('model_without_cloud.pkl')
 
 with open('model_with_cloud.pkl', 'rb') as f:
     model = cloudpickle.load(f)

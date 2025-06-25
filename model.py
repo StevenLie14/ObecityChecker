@@ -209,7 +209,6 @@ class ObecityPredictionModel:
     
     def predict(self, test_data):
         preprocess_data = self.preprocess_predict_data(test_data)
-        print(preprocess_data.head(1))
         if self.model is None:
             print("Model is not loaded. Please load the model first.")
             return
