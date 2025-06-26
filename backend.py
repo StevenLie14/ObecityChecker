@@ -3,12 +3,12 @@ from pydantic import BaseModel
 import pandas as pd
 import uvicorn
 import cloudpickle
-
-
-# model_without_cloud = ObecityPredictionModel.load_model('model_without_cloud.pkl')
+from model import ObecityPredictionModel
 
 with open('model_with_cloud.pkl', 'rb') as f:
     model = cloudpickle.load(f)
+model = ObecityPredictionModel.load_model('model_without_cloud.pkl')
+
     
 app = FastAPI(title="Obesity Prediction API")
 
