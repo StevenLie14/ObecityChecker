@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder, RobustScaler, Sta
 import pickle
 import matplotlib.pyplot as plt
 import cloudpickle
-from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
 import seaborn as sns
 
 
@@ -19,8 +19,8 @@ class ObecityPredictionModel:
         self.ohe_encoders = {}
         self.normal_cols = ['Age','Height','Weight','FCVC','CH2O','FAF','TUE']
         self.unnormal_cols = ['NCP']
-        self.ohe_columns = ['CAEC','CALC','MTRANS']
-        self.le_columns = ['Gender','FAVC','family_history_with_overweight','SMOKE','SCC']
+        self.ohe_columns = ['CAEC','CALC']
+        self.le_columns = ['Gender','FAVC','family_history_with_overweight','SCC']
         self.y_encoder = LabelEncoder()
         self.all_columns = None
     
@@ -76,22 +76,18 @@ class ObecityPredictionModel:
         self.data['Age'] = self.data['Age'].astype(str).str.extract('(\d+)').astype(int)
         
         
-        x = self.data.drop(columns=["NObeyesdad"])
+        x = self.data.drop(columns=["NObeyesdad","SMOKE","MTRANS"])
         y = self.data["NObeyesdad"]
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=42)
         FCVC_imputation = x_train["FCVC"].mean()
-        MTRANS_imputation = x_train["MTRANS"].mode()[0]
         x_train['FCVC'] = x_train['FCVC'].fillna(FCVC_imputation)
         x_test['FCVC'] = x_test['FCVC'].fillna(FCVC_imputation)
-
-        x_train['MTRANS'] = x_train['MTRANS'].fillna(MTRANS_imputation)
-        x_test['MTRANS'] = x_test['MTRANS'].fillna(MTRANS_imputation)
         return x_train, y_train, x_test, y_test
 
     def train_model(self):
         print("Training Model")
-        self.model = XGBClassifier(learning_rate = 0.1, max_depth = 6, n_estimators = 100, random_state = 42)
+        self.model = LGBMClassifier(learning_rate = 0.1, n_estimators= 200,num_leaves= 15, verbose=-1, random_state = 42)
         self.model.fit(self.x_train, self.y_train)
         print("Training Model Done")
         return self.model

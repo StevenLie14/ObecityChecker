@@ -4,6 +4,7 @@ import pandas as pd
 import uvicorn
 import cloudpickle
 
+
 # model_without_cloud = ObecityPredictionModel.load_model('model_without_cloud.pkl')
 
 with open('model_with_cloud.pkl', 'rb') as f:
@@ -22,13 +23,11 @@ class ObesityInput(BaseModel):
     FCVC: float
     NCP: float
     CAEC: str
-    SMOKE: str
     CH2O: float
     SCC: str
     FAF: float
     TUE: float
     CALC: str
-    MTRANS: str
 
 
 @app.post("/predict")
@@ -42,13 +41,11 @@ def predict_obesity(input_data: ObesityInput = ObesityInput(
         FCVC=2.5,
         NCP=3.0,
         CAEC="Sometimes",
-        SMOKE="no",
         CH2O=2.0,
         SCC="no",
         FAF=1.5,
         TUE=1.0,
         CALC="Sometimes",
-        MTRANS="Public_Transportation"
     )):
     try:
         input_df = pd.DataFrame([input_data.dict()])

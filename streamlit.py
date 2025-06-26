@@ -57,13 +57,9 @@ if page.startswith("New"):
 
         with col3:
             FAVC = st.radio("Frequent High-Calorie Food Consumption?", ["yes", "no"], horizontal=True)
-            SMOKE = st.radio("Do you Smoke?", ["yes", "no"], horizontal=True)
             SCC = st.radio("Calorie Consumption Monitoring", ["yes", "no"], horizontal=True)
             CAEC = st.selectbox("Eating Between Meals", ["no", "Sometimes", "Frequently", "Always"])
             CALC = st.selectbox("Alcohol Consumption", ["no", "Sometimes", "Frequently", "Always"])
-            MTRANS = st.selectbox("Mode of Transportation", [
-                "Public_Transportation", "Automobile", "Walking", "Motorbike", "Bike"
-            ])
 
         submitted = st.form_submit_button("Predict")
         
@@ -72,8 +68,8 @@ if page.startswith("New"):
         input_data = {
             "Gender": Gender, "Age": Age, "Height": Height, "Weight": Weight,
             "family_history_with_overweight": family_history, "FAVC": FAVC, "FCVC": FCVC, "NCP": NCP,
-            "CAEC": CAEC, "SMOKE": SMOKE, "CH2O": CH2O, "SCC": SCC,
-            "FAF": FAF, "TUE": TUE, "CALC": CALC, "MTRANS": MTRANS
+            "CAEC": CAEC, "CH2O": CH2O, "SCC": SCC,
+            "FAF": FAF, "TUE": TUE, "CALC": CALC
         }
         with st.spinner("Analyzing your data..."):
             result = call_prediction_api(input_data)
@@ -91,8 +87,8 @@ elif page.startswith("Test"):
     example_data = {
         "Gender": "Male", "Age": 22, "Height": 1.75, "Weight": 85.0,
         "family_history_with_overweight": "yes", "FAVC": "yes", "FCVC": 2.5, "NCP": 3.0,
-        "CAEC": "Sometimes", "SMOKE": "no", "CH2O": 2.0, "SCC": "no",
-        "FAF": 1.5, "TUE": 1.0, "CALC": "Sometimes", "MTRANS": "Public_Transportation"
+        "CAEC": "Sometimes", "CH2O": 2.0, "SCC": "no",
+        "FAF": 1.5, "TUE": 1.0, "CALC": "Sometimes"
     }
 
     st.code(example_data, language="json")
@@ -105,6 +101,25 @@ elif page.startswith("Test"):
                 label = result.get("prediction", "Unknown")
                 st.success(f"Prediction: `{label}`")
                 st.markdown(f"<h3 style='color:{get_label_color(label)}'> Test Case Result: {label}</h3>", unsafe_allow_html=True)
+                
+    example_data_2 = {
+        "Gender": "Female", "Age": 35, "Height": 1.60, "Weight": 70.0,
+        "family_history_with_overweight": "no", "FAVC": "no", "FCVC": 3.0, "NCP": 4.0,
+        "CAEC": "no", "CH2O": 2.5, "SCC": "yes",
+        "FAF": 3.0, "TUE": 0.5, "CALC": "Frequently"
+    }
+    
+    st.code(example_data_2, language="json")
+    if st.button("Run Test Case 2"):
+        with st.spinner("Sending second test case..."):
+            result = call_prediction_api(example_data_2)
+            if "error" in result:
+                st.error(f"Error : {result['error']}")
+            else:
+                label = result.get("prediction", "Unknown")
+                st.success(f"Prediction: `{label}`")
+                st.markdown(f"<h3 style='color:{get_label_color(label)}'> Test Case 2 Result: {label}</h3>", unsafe_allow_html=True)
+
 
 elif page.startswith("Pre"):
     st.subheader("Prediction History")
