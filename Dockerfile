@@ -3,8 +3,13 @@ FROM python:3.12-slim AS builder
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
+&& rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    git \
+    gcc \
+    g++ \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
