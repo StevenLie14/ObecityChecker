@@ -1,7 +1,11 @@
 
-# Obecity Level Classification – UAS Deployment
+# Obecity Level Classification
 
-## Student Info
+## 📋 Project Overview
+
+This project demonstrates end-to-end MLOps practices by building, training, and deploying a machine learning model to classify obesity levels. The system predicts one of seven obesity categories based on demographic data, eating habits, and lifestyle factors.
+
+## Student Information
 - **Name:** Steven Liementha
 - **NIM:** 2702265370
 - **Class:** LA09
