@@ -3,7 +3,7 @@ services:
     tty: true
     pull_policy: always
     restart: unless-stopped
-    image: registry.stevenlie.my.id/stevenlie14/ObecityChecker:latest
+    image: registry.stevenlie.my.id/stevenlie14/obesity-checker:latest
     container_name: obesity_checker
     ports:
       - "${APP_PORT}:${APP_PORT}"
