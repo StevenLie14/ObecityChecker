@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os
 
 st.set_page_config(page_title="Obesity Prediction App", layout="wide")
 st.title("Obesity Prediction System")
@@ -15,7 +16,7 @@ if "history" not in st.session_state:
 
 def call_prediction_api(data):
     try:
-        response = requests.post("http://127.0.0.1:8000/predict", json=data)
+        response = requests.post(f"{os.getenv("API_URL")}/predict", json=data)
         if response.status_code == 200:
             return response.json()
         else:
