@@ -1,0 +1,11 @@
+services:
+  obesity_checker:
+    tty: true
+    pull_policy: always
+    restart: unless-stopped
+    image: registry.stevenlie.my.id/stevenlie14/ObecityChecker:latest
+    container_name: obesity_checker
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - APP_PORT=${APP_PORT}
